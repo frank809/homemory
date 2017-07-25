@@ -20,15 +20,19 @@ class photo (object):
         exifinfo = photofile._getexif()
 
         #get photo create time
-        createtime = exifinfo[0x9003]
+        try:
+            createtime = exifinfo[0x9003]
 
-        #get photo GPS, 0x8825 is GPS informations in EXIF format.
-        #GPS information used like "N:36,46,5133327;E:104,36,458898;438".
-        latitude = "%s:%s,%s,%s"%(exifinfo[0x8825][1],exifinfo[0x8825][2][0][0],exifinfo[0x8825][2][1][0],exifinfo[0x8825][2][2][0])
-        longitude = "%s:%s,%s,%s"%(exifinfo[0x8825][3],exifinfo[0x8825][4][0][0],exifinfo[0x8825][4][1][0],exifinfo[0x8825][4][2][0])
-        attitude = exifinfo[0x8825][6][0]
+            #get photo GPS, 0x8825 is GPS informations in EXIF format.
+            #GPS information used like "N:36,46,5133327;E:104,36,458898;438".
+            latitude = "%s:%s,%s,%s"%(exifinfo[0x8825][1],exifinfo[0x8825][2][0][0],exifinfo[0x8825][2][1][0],exifinfo[0x8825][2][2][0])
+            longitude = "%s:%s,%s,%s"%(exifinfo[0x8825][3],exifinfo[0x8825][4][0][0],exifinfo[0x8825][4][1][0],exifinfo[0x8825][4][2][0])
+            attitude = exifinfo[0x8825][6][0]
 
-        GPSinfo = "%s;%s;%s"%(latitude, longitude, attitude)
+            GPSinfo = "%s;%s;%s"%(latitude, longitude, attitude)
+        except:
+            createtime = ""
+            GPSinfo = ""
 
         #get hash value of file
         hashvalue = hashlib.sha256(file).hexdigest()
@@ -49,4 +53,3 @@ class photo (object):
         if not os.path.exists(outputfolder):
             os.mkdir(outputfolder)
         photofile.save(outputfolder+os.sep+hashvalue+'.jpg', "JPEG")
-        pass

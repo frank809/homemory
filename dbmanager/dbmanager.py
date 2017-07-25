@@ -78,6 +78,18 @@ class dbmanager(object):
         #todo: update some of value should be supported.
         pass
 
+    def isphotoexist(self,filehash):
+        """
+        Check if photo's SHA256 have already stored in db.
+        :return:
+        """
+        sqlstr = "select count(*) from photos where id == '%s'"%filehash;
+        self.dbcursor.execute(sqlstr)
+        count = self.dbcursor.fetchone()[0]
+        if count == 0:
+            return False
+        return True
+
     def __del__(self):
         self.conn.close()
         pass
