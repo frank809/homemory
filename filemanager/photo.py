@@ -51,5 +51,5 @@ class photo (object):
         photofile = Image.open(file, 'r')
         photofile.thumbnail(size)
         if not os.path.exists(outputfolder):
-            os.mkdir(outputfolder)
+            os.makedirs(outputfolder)
         photofile.save(outputfolder+os.sep+hashvalue+'.jpg', "JPEG")
