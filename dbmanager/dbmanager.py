@@ -17,6 +17,7 @@ class dbmanager(object):
             self.dbcursor = self.conn.cursor()
             self.initphototable(True)
         else:
+            os.makedirs(os.path.dirname(db))
             self.conn = sqlite3.connect(db)
             self.dbcursor = self.conn.cursor()
             self.initphototable(False)  #need create tables

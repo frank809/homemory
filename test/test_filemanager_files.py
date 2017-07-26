@@ -33,8 +33,10 @@ class TestStringMethods(unittest.TestCase):
         shutil.rmtree(ROOTPATH + os.sep + "thumb")
 
     def test_tidy(self):
+        shutil.copytree("./resource/tidy", "./resource/tidy2")
         tt = filemanager()
-        tt.tidy("./resource")
+        tt.tidy("./resource/tidy2")
+        shutil.rmtree("./resource/tidy2")
 
 
 if __name__ == '__main__':

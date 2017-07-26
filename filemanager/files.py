@@ -8,7 +8,10 @@ import hashlib
 import shutil
 
 #set some global path for file
-ROOTPATH="./memory/"
+ROOTPATH=".%smemory"%os.sep
+
+#!This should be all use lowercase for externation name.
+supportimagetypeext=['.jpg', '.jpeg']
 
 
 
@@ -32,8 +35,10 @@ class filemanager(object):
         :param inputfolder:
         :return:
         """
+        print "Tidy folder:%s"%inputfolder
         for item in os.listdir(inputfolder):
             itemwithpath=inputfolder + os.sep + item
+            print "Tidy file:%s" % itemwithpath
             if os.path.isdir(itemwithpath):
                 self.tidy(itemwithpath)
             else:
@@ -41,10 +46,13 @@ class filemanager(object):
                     fileinfo = self.get_info(itemwithpath)
 
                     #file should be createthumbfile firest then move it into raw. otherwise createthumbfile can't find file.
-                    self.createthumbfile(itemwithpath)
-                    self.movefiletoraw(itemwithpath)
+                    #self.createthumbfile(itemwithpath)
+                    #self.movefiletoraw(itemwithpath)
 
-                    self.filedb.put_photoinfo(fileinfo["hash"], ROOTPATH+os.sep+"raw"+os.sep+itemwithpath, ROOTPATH+os.sep+"thumb"+os.sep+itemwithpath, fileinfo["createtime"], fileinfo["gps"])
+                    filename, ext = os.path.splitext(itemwithpath)
+                    itemhash=hashlib.sha256(itemwithpath).hexdigest()
+
+                    self.filedb.put_photoinfo(fileinfo["hash"], "raw"+os.sep+itemhash+ext, "thumb"+os.sep+itemhash+ext, fileinfo["createtime"], fileinfo["gps"])
 
     def get_info(self, file):
         """
@@ -53,16 +61,21 @@ class filemanager(object):
         :return:
         """
         filename, ext = os.path.splitext(file)
-        fileinfo =""
+        fileinfo ={"hash": "", "createtime": "", "gps": ""}
 
         #handle JPEG file.
         if ext.upper() == ".JPG" or ext.upper() == ".JPEG":
             jpegfile = photo.photo() #init one photo instance. todo: check if this init can be in __init__
             jpeginfo = jpegfile.getfromjpeg(file)
             fileinfo = jpeginfo
+            self.createthumbfile(file)
+            self.movefiletoraw(file)
         return fileinfo
 
     def needtidy(self, file):
+        filename, ext = os.path.splitext(file)
+        if ext.lower() not in supportimagetypeext:
+            return False
         hashvalue = hashlib.sha256(file).hexdigest()
         return not self.filedb.isphotoexist(hashvalue)
 

@@ -22,7 +22,10 @@ class photo (object):
         #get photo create time
         try:
             createtime = exifinfo[0x9003]
+        except:
+            createtime = ""
 
+        try:
             #get photo GPS, 0x8825 is GPS informations in EXIF format.
             #GPS information used like "N:36,46,5133327;E:104,36,458898;438".
             latitude = "%s:%s,%s,%s"%(exifinfo[0x8825][1],exifinfo[0x8825][2][0][0],exifinfo[0x8825][2][1][0],exifinfo[0x8825][2][2][0])
@@ -31,7 +34,6 @@ class photo (object):
 
             GPSinfo = "%s;%s;%s"%(latitude, longitude, attitude)
         except:
-            createtime = ""
             GPSinfo = ""
 
         #get hash value of file
