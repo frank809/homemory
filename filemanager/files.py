@@ -8,7 +8,7 @@ import hashlib
 import shutil
 
 #set some global path for file
-ROOTPATH=".%smemory"%os.sep
+ROOTPATH=".%smemory" % os.sep
 
 #!This should be all use lowercase for externation name.
 supportimagetypeext=['.jpg', '.jpeg']
@@ -35,13 +35,17 @@ class filemanager(object):
         :param inputfolder:
         :return:
         """
-        print "Tidy folder:%s"%inputfolder
+        #for create one html.
+        temp_htmlstrings = "<html><title>Photo review for test</title><body>"
+
+
+        print "Tidy folder:%s" % inputfolder
         for item in os.listdir(inputfolder):
             itemwithpath=inputfolder + os.sep + item
-            print "Tidy file:%s" % itemwithpath
             if os.path.isdir(itemwithpath):
                 self.tidy(itemwithpath)
             else:
+                filehashvalue = ""# if tidy needed then print SHA256 also. this variable only used in print.
                 if self.needtidy(itemwithpath):
                     fileinfo = self.get_info(itemwithpath)
 
@@ -51,8 +55,21 @@ class filemanager(object):
 
                     filename, ext = os.path.splitext(itemwithpath)
                     itemhash=hashlib.sha256(itemwithpath).hexdigest()
+                    filehashvalue=itemhash
 
                     self.filedb.put_photoinfo(fileinfo["hash"], "raw"+os.sep+itemhash+ext, "thumb"+os.sep+itemhash+ext, fileinfo["createtime"], fileinfo["gps"])
+
+                    # for html test
+                    temp_htmlstrings+="<img src=\"%s\"/>" % ("thumb"+os.sep+itemhash+ext)
+
+                print "Tidy file[%s]:%s" % (filehashvalue, itemwithpath)
+
+        #for html test:
+        temp_htmlfile = open(ROOTPATH+'/photo.html', 'w+')
+        temp_htmlfile.write(temp_htmlstrings)
+        temp_htmlfile.flush()
+        temp_htmlfile.close()
+
 
     def get_info(self, file):
         """
@@ -86,7 +103,7 @@ class filemanager(object):
             os.makedirs(ROOTPATH+os.sep+"raw")
         shutil.move(file, ROOTPATH+os.sep+"raw"+os.sep+hashlib.sha256(file).hexdigest()+ext)
 
-    def createthumbfile(self,file):
+    def createthumbfile(self, file):
         #default folder for thumbnail is ROOTPATH+os.sep+"thumb"
         filename, ext = os.path.splitext(file)
 

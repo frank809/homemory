@@ -28,11 +28,11 @@ class photo (object):
         try:
             #get photo GPS, 0x8825 is GPS informations in EXIF format.
             #GPS information used like "N:36,46,5133327;E:104,36,458898;438".
-            latitude = "%s:%s,%s,%s"%(exifinfo[0x8825][1],exifinfo[0x8825][2][0][0],exifinfo[0x8825][2][1][0],exifinfo[0x8825][2][2][0])
-            longitude = "%s:%s,%s,%s"%(exifinfo[0x8825][3],exifinfo[0x8825][4][0][0],exifinfo[0x8825][4][1][0],exifinfo[0x8825][4][2][0])
+            latitude = "%s:%s,%s,%s" % (exifinfo[0x8825][1], exifinfo[0x8825][2][0][0], exifinfo[0x8825][2][1][0], exifinfo[0x8825][2][2][0])
+            longitude = "%s:%s,%s,%s" % (exifinfo[0x8825][3], exifinfo[0x8825][4][0][0], exifinfo[0x8825][4][1][0], exifinfo[0x8825][4][2][0])
             attitude = exifinfo[0x8825][6][0]
 
-            GPSinfo = "%s;%s;%s"%(latitude, longitude, attitude)
+            GPSinfo = "%s;%s;%s" % (latitude, longitude, attitude)
         except:
             GPSinfo = ""
 
