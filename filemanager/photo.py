@@ -49,9 +49,10 @@ class photo (object):
         :return:
         """
         size = 500, 500
+        filename, ext = os.path.splitext(file)
         hashvalue = hashlib.sha256(file).hexdigest()
         photofile = Image.open(file, 'r')
         photofile.thumbnail(size)
         if not os.path.exists(outputfolder):
             os.makedirs(outputfolder)
-        photofile.save(outputfolder+os.sep+hashvalue+'.jpg', "JPEG")
+        photofile.save(outputfolder+os.sep+hashvalue+ext, "JPEG")
