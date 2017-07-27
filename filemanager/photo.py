@@ -10,6 +10,12 @@ class photo (object):
     def __init__(self):
         pass
 
+    def __sha256(self,file):
+        f=open(file, 'rb')
+        hashvalue = hashlib.sha256(f.read()).hexdigest()
+        f.close()
+        return hashvalue
+
     def getfromjpeg(self,file):
         """
         get the EXIF informations (Create time, hash value(SHA256), GPS informations include attitude.
@@ -37,7 +43,7 @@ class photo (object):
             GPSinfo = ""
 
         #get hash value of file
-        hashvalue = hashlib.sha256(file).hexdigest()
+        hashvalue = self.__sha256(file)
 
         return {"hash": hashvalue, "createtime": createtime, "gps": GPSinfo}
 
@@ -50,7 +56,7 @@ class photo (object):
         """
         size = 500, 500
         filename, ext = os.path.splitext(file)
-        hashvalue = hashlib.sha256(file).hexdigest()
+        hashvalue = self.__sha256(file)
         photofile = Image.open(file, 'r')
         photofile.thumbnail(size)
         if not os.path.exists(outputfolder):

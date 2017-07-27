@@ -25,6 +25,12 @@ class filemanager(object):
     def __del__(self):
         pass
 
+    def __sha256(self,file):
+        f=open(file, 'rb')
+        hashvalue = hashlib.sha256(f.read()).hexdigest()
+        f.close()
+        return hashvalue
+
     def tidy(self, inputfolder):
         """
         for item in inputfolder:
@@ -54,7 +60,7 @@ class filemanager(object):
                     #self.movefiletoraw(itemwithpath)
 
                     filename, ext = os.path.splitext(itemwithpath)
-                    itemhash=hashlib.sha256(itemwithpath).hexdigest()
+                    itemhash = fileinfo["hash"]
                     filehashvalue=itemhash
 
                     self.filedb.put_photoinfo(fileinfo["hash"], "raw"+os.sep+itemhash+ext, "thumb"+os.sep+itemhash+ext, fileinfo["createtime"], fileinfo["gps"])
@@ -93,7 +99,7 @@ class filemanager(object):
         filename, ext = os.path.splitext(file)
         if ext.lower() not in supportimagetypeext:
             return False
-        hashvalue = hashlib.sha256(file).hexdigest()
+        hashvalue = self.__sha256(file)
         return not self.filedb.isphotoexist(hashvalue)
 
     def movefiletoraw(self, file):
@@ -101,7 +107,7 @@ class filemanager(object):
         filename, ext = os.path.splitext(file)
         if not os.path.exists(ROOTPATH+os.sep+"raw"):
             os.makedirs(ROOTPATH+os.sep+"raw")
-        shutil.move(file, ROOTPATH+os.sep+"raw"+os.sep+hashlib.sha256(file).hexdigest()+ext)
+        shutil.move(file, ROOTPATH+os.sep+"raw"+os.sep+self.__sha256(file)+ext)
 
     def createthumbfile(self, file):
         #default folder for thumbnail is ROOTPATH+os.sep+"thumb"
