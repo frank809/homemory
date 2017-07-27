@@ -6,3 +6,6 @@
 #python
 *.pyc
 *.pyo
+
+#test
+/test/memory/
