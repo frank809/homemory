@@ -7,7 +7,7 @@ import os.path
 import hashlib
 import shutil
 
-file = "./resource/test.jpg"
+file = "./resource/tidy2/test.jpg"
 
 
 class TestStringMethods(unittest.TestCase):

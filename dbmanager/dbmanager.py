@@ -7,7 +7,7 @@ import os.path
 
 class dbmanager(object):
 
-    def __init__(self, db="./init.db"):
+    def __init__(self, db=".%sinit.db"%os.path.sep):
         """
         SELECT count(*) FROM sqlite_master WHERE type='table' AND name='要查询的表名';
         :param db:
@@ -17,7 +17,9 @@ class dbmanager(object):
             self.dbcursor = self.conn.cursor()
             self.initphototable(True)
         else:
-            os.makedirs(os.path.dirname(db))
+            folder = os.path.dirname(db)
+            if folder is not "." and folder is not "..":
+                os.makedirs(os.path.dirname(db)) #if db is './xxx' this would be wrong.
             self.conn = sqlite3.connect(db)
             self.dbcursor = self.conn.cursor()
             self.initphototable(False)  #need create tables
