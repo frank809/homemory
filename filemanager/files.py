@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-import photo
+from . import photo
 from dbmanager.dbmanager import dbmanager
 import hashlib
 import shutil
@@ -45,7 +45,7 @@ class filemanager(object):
         temp_htmlstrings = "<html><title>Photo review for test</title><body>"
 
 
-        print "Tidy folder:%s" % inputfolder
+        print("Tidy folder:%s" % inputfolder)
         for item in os.listdir(inputfolder):
             itemwithpath=inputfolder + os.sep + item
             if os.path.isdir(itemwithpath):
@@ -68,7 +68,7 @@ class filemanager(object):
                     # for html test
                     temp_htmlstrings+="<img src=\"%s\"/>" % ("thumb"+os.sep+itemhash+ext)
 
-                print "Tidy file[%s]:%s" % (filehashvalue, itemwithpath)
+                print("Tidy file[%s]:%s" % (filehashvalue, itemwithpath))
 
         #for html test:
         temp_htmlfile = open(ROOTPATH+'/photo.html', 'w+')

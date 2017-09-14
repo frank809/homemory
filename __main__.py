@@ -14,8 +14,8 @@ def main():
             fileman = filemanager.files.filemanager()
             fileman.tidy(inputfolder)
         else:
-            print "Error. Can't find input folder:%s"%inputfolder
+            print("Error. Can't find input folder:%s"%inputfolder)
     else:
-        print "Error. please give only one param: input folder."
+        print("Error. please give only one param: input folder.")
 
 main()

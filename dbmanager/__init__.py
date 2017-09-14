@@ -1,1 +1,1 @@
-import dbmanager
+from . import dbmanager
