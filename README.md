@@ -13,3 +13,5 @@ Thumb file used 500*500 for each photo. it is small to about 20k and easy for we
 [2017-07-29]:  
 homemory can tidy photos via gives one input folder. folder named "memory" will be created automatically and work in it.
 one html file will be created for review all photos. it is very simple and will be replaced by other feature in the future.
+[2017-09-14]:  
+Support Python3 in branch.
